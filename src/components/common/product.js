@@ -35,12 +35,12 @@ function Product() {
 
     const productsWithDefaultQuantity = Array.isArray(data)
       ? data.map(product => ({
-          ...product,
-          quantity: 1,
-          image: product.image || '',
-        }))
+        ...product,
+        quantity: 1,
+        image: product.image || '',
+      }))
       : [];
-      
+
     setProducts(productsWithDefaultQuantity);
   };
 
@@ -70,7 +70,7 @@ function Product() {
         <div className="col-lg-6 text-center">
           <div className="section-title">
             <h1>Latest Products</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            <p>The radiance lives on in the Nike Air Force 1 '07, the b-ball icon that puts a fresh spin on what you know best: crisp leather, bold colours and the perfect amount of flash to make you shine.</p>
           </div>
         </div>
       </div>
@@ -81,9 +81,11 @@ function Product() {
               {firstGroup.map((product) => (
                 <div key={product.productId} className="col-lg-3 col-md-6">
                   <div className="single-product">
-                    <img className="img-fluid" src={product.image} alt={product.name} style={{width: "255px", height: "255px"}} />
+                    <img className="img-fluid" src={product.image} alt={product.name} style={{ width: "255px", height: "255px" }} />
                     <div className="product-details">
-                      <h6>{product.name}</h6>
+                      <Link to={`/product-detail/${product.productId}`} className="social-info" style={{ textDecoration: 'none', color: 'inherit' }}>
+                        <h6>{product.name}</h6>
+                      </Link>
                       <div className="price">
                         <h6>${product.price}</h6>
                         <h6 className="l-through">{product.oldPrice}</h6>
@@ -115,9 +117,11 @@ function Product() {
               {secondGroup.map((product) => (
                 <div key={product.productId} className="col-lg-3 col-md-6">
                   <div className="single-product">
-                    <img className="img-fluid" src={product.image} alt={product.name} style={{width: "255px", height: "255px"}} />
+                    <img className="img-fluid" src={product.image} alt={product.name} style={{ width: "255px", height: "255px" }} />
                     <div className="product-details">
-                      <h6>{product.name}</h6>
+                      <Link to={`/product-detail/${product.productId}`} className="social-info" style={{ textDecoration: 'none', color: 'inherit' }}>
+                        <h6>{product.name}</h6>
+                      </Link>
                       <div className="price">
                         <h6>${product.price}</h6>
                         <h6 className="l-through">{product.oldPrice}</h6>

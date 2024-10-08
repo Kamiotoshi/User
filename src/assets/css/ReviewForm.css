@@ -1,0 +1,25 @@
+.star-rating {
+    list-style: none;
+    padding: 0;
+    display: flex;
+  }
+  
+  .star-rating li {
+    display: inline-block;
+    cursor: pointer;
+  }
+  
+  .star-rating .fa-star {
+    font-size: 24px;
+    color: #ccc; /* Default color for unselected stars (gray/white) */
+    transition: color 0.2s ease-in-out; /* Smooth color transition */
+  }
+  
+  .star-rating .fa-star.selected {
+    color: gold; /* Color for selected stars */
+  }
+  
+  .star-rating .fa-star:hover {
+    color: gold; /* Hover effect for stars */
+  }
+  

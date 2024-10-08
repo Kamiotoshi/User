@@ -27,38 +27,38 @@ const OrderSummary = () => {
         // Fetch product name
         const fetchProducts = async () => {
             try {
-            const response = await axios.get('https://projectky320240926105522.azurewebsites.net/api/Product');
-            setProducts(response.data);
+                const response = await axios.get('https://projectky320240926105522.azurewebsites.net/api/Product');
+                setProducts(response.data);
             } catch (error) {
-            console.log(error);
+                console.log(error);
             }
         };
         // Fetch images
         const fetchImages = async () => {
             try {
-            const response = await axios.get('https://projectky320240926105522.azurewebsites.net/api/Product');
-            setImages(response.data);
+                const response = await axios.get('https://projectky320240926105522.azurewebsites.net/api/Product');
+                setImages(response.data);
             } catch (error) {
-            console.log(error);
+                console.log(error);
             }
         };
         // Fetch colors
         const fetchColors = async () => {
             try {
-            const response = await axios.get('https://projectky320240926105522.azurewebsites.net/api/Color');
-            setColors(response.data);
+                const response = await axios.get('https://projectky320240926105522.azurewebsites.net/api/Color');
+                setColors(response.data);
             } catch (error) {
-            console.log(error);
+                console.log(error);
             }
         };
 
         // Fetch sizes
         const fetchSizes = async () => {
             try {
-            const response = await axios.get('https://projectky320240926105522.azurewebsites.net/api/Size');
-            setSizes(response.data);
+                const response = await axios.get('https://projectky320240926105522.azurewebsites.net/api/Size');
+                setSizes(response.data);
             } catch (error) {
-            console.log(error);
+                console.log(error);
             }
         };
 
@@ -98,7 +98,7 @@ const OrderSummary = () => {
 
     const subtotal = orderItems.reduce((total, item) => total + item.price * item.quantity, 0);
     const shippingFee = shippingMethod === 'express' ? 5.00 : 0.00;
-    
+
 
     return (
         <div className="container order-area">
@@ -107,7 +107,7 @@ const OrderSummary = () => {
                 {orderItems.map(item => (
                     <div className="d-flex order-item" key={item.orderItemId}>
                         <div className="flex-grow-1 ms-3">
-                            <img className="img-fluid" src={getImageName(item.variant.productId)} alt={item.name} />
+                            <img className="img-fluid" src={item.variant.image} alt={item.name} />
                             <div className="row item-details">
                                 <div className="col-md-6 mb-3 mb-md-0">
                                     {/* <span className="h5 d-block">Product ID: {item.variant.productId}</span> */}
@@ -150,72 +150,72 @@ const OrderSummary = () => {
                     </div>
                 </div>
             </div>
-                {/* // Customer info */}
+            {/* // Customer info */}
             <div className="customer-info" style={{ marginTop: "0" }}>
-            <div className="card mb-6 customer-details">
-                        <div className="card-header">
-                            <h5 className="card-title m-0">Customer details</h5>
-                        </div>
-                        <div className="card-body">
-                            <div className="d-flex justify-content-start align-items-center mb-6">
-                                
-                                <div className="d-flex flex-column">
-                                    <h6 className="mb-1">Name : {order.name}</h6>
-                                    
-                                    
-                                </div>
-                                
+                <div className="card mb-6 customer-details">
+                    <div className="card-header">
+                        <h5 className="card-title m-0">Customer details</h5>
+                    </div>
+                    <div className="card-body">
+                        <div className="d-flex justify-content-start align-items-center mb-6">
+
+                            <div className="d-flex flex-column">
+                                <h6 className="mb-1">Name : {order.name}</h6>
+
+
                             </div>
-                            
-                            
-                            <div className="d-flex justify-content-between">
-                                <h6 className="mb-1">Contact info</h6>
-                            
-                            </div>
-                            <p className="mb-1">Email: {order.email}</p>
-                            <p className="mb-0">Mobile: {order.telephone}</p>
-                            <p className="mb-1">ShippingMethod: {order.shippingMethod}</p>
-                            <p className="mb-0">PaymentMethod: {order.paymentMethod}</p>
+
                         </div>
+
+
+                        <div className="d-flex justify-content-between">
+                            <h6 className="mb-1">Contact info</h6>
+
+                        </div>
+                        <p className="mb-1">Email: {order.email}</p>
+                        <p className="mb-0">Mobile: {order.telephone}</p>
+                        <p className="mb-1">ShippingMethod: {order.shippingMethod}</p>
+                        <p className="mb-0">PaymentMethod: {order.paymentMethod}</p>
                     </div>
-                    <div className="card mb-6">
-                        <div className="card-header d-flex justify-content-between">
-                            <h5 className="card-title m-0">Shipping address</h5>
-                            
-                        </div>
-                        <div className="card-body">
-                            <p className="mb-0">
-                                {order.shippingAddress}<br />
-                                {order.city} <br />
-                               
-                            </p>
-                        </div>
+                </div>
+                <div className="card mb-6">
+                    <div className="card-header d-flex justify-content-between">
+                        <h5 className="card-title m-0">Shipping address</h5>
+
                     </div>
-                    <div className="card mb-6">
-                        <div className="card-header d-flex justify-content-between pb-2">
-                            <h5 className="card-title m-0">Billing address</h5>
-                            
-                        </div>
-                        <div className="card-body">
-                            <p className="mb-6">
-                                {order.billingAddress} <br />
-                                {order.city} <br />
-                                
-                            </p>
-                        </div>
+                    <div className="card-body">
+                        <p className="mb-0">
+                            {order.shippingAddress}<br />
+                            {order.city} <br />
+
+                        </p>
                     </div>
-                    <div className="card mb-6">
-                        <div className="card-header d-flex justify-content-between pb-2">
-                            <h5 className="card-title m-0">Order Note</h5>
-                            
-                        </div>
-                        <div className="card-body">
-                            <p className="mb-6">
-                                {order.orderNote} 
-                                
-                            </p>
-                        </div>
+                </div>
+                <div className="card mb-6">
+                    <div className="card-header d-flex justify-content-between pb-2">
+                        <h5 className="card-title m-0">Billing address</h5>
+
                     </div>
+                    <div className="card-body">
+                        <p className="mb-6">
+                            {order.billingAddress} <br />
+                            {order.city} <br />
+
+                        </p>
+                    </div>
+                </div>
+                <div className="card mb-6">
+                    <div className="card-header d-flex justify-content-between pb-2">
+                        <h5 className="card-title m-0">Order Note</h5>
+
+                    </div>
+                    <div className="card-body">
+                        <p className="mb-6">
+                            {order.orderNote}
+
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     );

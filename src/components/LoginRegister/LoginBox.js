@@ -58,7 +58,7 @@ const LoginBox = () => {
         
         // Fetch user information using the cookies
         const userInfoResponse = await axios.get(
-          'https://projectky320240926105522.azurewebsites.net/api/User/profile',
+          'https://projectky320240926105522.azurewebsites.net/api/User/userProfile',
           {
             withCredentials: true, // Ensure that cookies are sent to fetch user info
           }

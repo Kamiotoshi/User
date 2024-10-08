@@ -34,12 +34,11 @@ export default function Banner(props) {
                                 <div className="col-lg-5 col-md-6">
                                     <div className="banner-content">
                                         <h1>Nike New <br />Collection!</h1>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                                            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
-                                        <div className="add-bag d-flex align-items-center">
+                                        <p>The radiance lives on in the Nike Air Force 1 '07, the b-ball icon that puts a fresh spin on what you know best: crisp leather, bold colours and the perfect amount of flash to make you shine.</p>
+                                        {/* <div className="add-bag d-flex align-items-center">
                                             <a onClick={() => addToCart(product)} className="add-btn" href=""><span className="lnr lnr-cross"></span></a>
                                             <span className="add-text text-uppercase">Add to Bag</span>
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </div>
                                 <div className="col-lg-7">
@@ -53,12 +52,11 @@ export default function Banner(props) {
                                 <div className="col-lg-5 col-md-6">
                                     <div className="banner-content">
                                         <h1>Nike New <br />Collection!</h1>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                                            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
-                                        <div className="add-bag d-flex align-items-center">
+                                        <p>The radiance lives on in the Nike Air Force 1 '07, the b-ball icon that puts a fresh spin on what you know best: crisp leather, bold colours and the perfect amount of flash to make you shine.</p>
+                                        {/* <div className="add-bag d-flex align-items-center">
                                             <a onClick={() => addToCart(product)} className="add-btn" href=""><span className="lnr lnr-cross"></span></a>
                                             <span className="add-text text-uppercase">Add to Bag</span>
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </div>
                                 <div className="col-lg-7">

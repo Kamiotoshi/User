@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate,useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function ProductDetail() {
     const { id } = useParams();
@@ -7,16 +7,23 @@ export default function ProductDetail() {
     const [productVariants, setProductVariants] = useState([]);
     const [selectedColor, setSelectedColor] = useState(null);
     const [selectedSize, setSelectedSize] = useState(null);
+    const [productImage, setProductImage] = useState(null); // State for selected image
+    const [productPrice, setProductPrice] = useState(null); // State for selected price
     const navigate = useNavigate();
+
     useEffect(() => {
         const fetchProduct = async () => {
             const productResponse = await fetch(`https://projectky320240926105522.azurewebsites.net/api/Product/${id}`);
             const productData = await productResponse.json();
             setProduct(productData);
+            setProductImage(productData.image);  // Set initial image
+            setProductPrice(productData.price);  // Set initial price
+            console.log(productData);  // Original console log
 
             const variantResponse = await fetch(`https://projectky320240926105522.azurewebsites.net/api/ProductVariant?productId=${id}`);
             const variantData = await variantResponse.json();
             setProductVariants(variantData.filter(variant => variant !== null));
+            console.log(variantData);  // Original console log
         };
 
         fetchProduct();
@@ -24,51 +31,46 @@ export default function ProductDetail() {
 
     const handleAddToCart = async () => {
         if (selectedColor && selectedSize) {
-            console.log("Selected Color:", selectedColor);  // Kiểm tra màu đã chọn
-            console.log("Selected Size:", selectedSize);    // Kiểm tra size đã chọn
-            console.log("Product Variants:", productVariants);  // Kiểm tra danh sách biến thể
+            console.log("Selected Color:", selectedColor);  // Debugging selected color
+            console.log("Selected Size:", selectedSize);    // Debugging selected size
+            console.log("Product Variants:", productVariants);  // Debugging product variants
     
-            // Kiểm tra từng biến thể
+            // Check each variant for debugging
             productVariants.forEach(variant => {
                 console.log(`Checking variant - Color: ${variant.color?.colorName}, Size: ${variant.size?.sizeName}, ProductId: ${variant.productId}`);
             });
-    
-            // Tìm biến thể dựa trên color, size và id từ useParams (đại diện cho productId)
+
             const selectedVariant = productVariants.find(variant => {
-                console.log("Comparing with:", variant.color?.colorName, variant.size?.sizeName, variant.productId);
+                console.log("Comparing with:", variant.color?.colorName, variant.size?.sizeName, variant.productId); // Debugging variant comparison
                 return (
-                    variant.color?.colorName.trim().toLowerCase() === selectedColor.trim().toLowerCase() && 
+                    variant.color?.colorName.trim().toLowerCase() === selectedColor.trim().toLowerCase() &&
                     variant.size?.sizeName.trim().toLowerCase() === selectedSize.trim().toLowerCase() &&
-                    String(variant.productId) === String(id)  // Đảm bảo productId và id là cùng kiểu
+                    String(variant.productId) === String(id)
                 );
             });
-    
+
             if (selectedVariant) {
-                console.log("Selected Variant:", selectedVariant);  // Kiểm tra biến thể đã tìm thấy
-                const userId = localStorage.getItem('Token');  // Lấy userId từ localStorage
+                console.log("Selected Variant:", selectedVariant);  // Debugging selected variant
+                const userId = localStorage.getItem('Token');
                 const cartItem = {
-                    userId,  // Lưu userId
-                    variantId: selectedVariant.variantId,  // Đẩy đúng variantId
-                    quantity: 1  // Hardcoded số lượng sản phẩm (ở đây là 1)
+                    userId,
+                    variantId: selectedVariant.variantId,
+                    quantity: 1,
                 };
-    
+
                 try {
-                    // Gửi yêu cầu thêm sản phẩm vào giỏ hàng
                     const response = await fetch('https://projectky320240926105522.azurewebsites.net/api/Cart/add', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify(cartItem),  // Đẩy variantId và các thông tin khác lên API
+                        body: JSON.stringify(cartItem),
                     });
-    
+
                     if (response.ok) {
                         const data = await response.json();
                         alert('Item added to cart successfully!');
                         console.log(data);
-                        navigate("/cart");
-                        // Force reloading the page to ensure all state is updated and cleared
-                        window.location.reload();
                     } else {
                         const errorData = await response.json();
                         alert(`Error: ${errorData.message}`);
@@ -84,7 +86,28 @@ export default function ProductDetail() {
             alert('Please select a color and size.');
         }
     };
-    
+
+    const handleColorChange = (color) => {
+        setSelectedColor(color);
+        setSelectedSize(null);
+
+        // Find the variant for the selected color and productId, update image and price accordingly
+        const selectedVariant = productVariants.find(variant => {
+            console.log("Matching Variant for Color:", color, "ProductId:", id);  // Debugging color matching
+            return (
+                variant.color?.colorName === color &&
+                String(variant.productId) === String(id)
+            );
+        });
+
+        if (selectedVariant) {
+            setProductImage(selectedVariant.image);  // Update to variant image
+            setProductPrice(selectedVariant.price);  // Update to variant price
+        } else {
+            setProductImage(product.image);  // Fall back to product's default image
+            setProductPrice(product.price);  // Fall back to product's default price
+        }
+    };
 
     const availableColors = [...new Set(productVariants.map(variant => variant.color?.colorName).filter(Boolean))];
     const availableSizes = [...new Set(productVariants.map(variant => variant.size?.sizeName).filter(Boolean))];
@@ -102,8 +125,8 @@ export default function ProductDetail() {
                     <div className="col-lg-6">
                         <div className="s_Product_carousel">
                             <div className="single-prd-item">
-                                {product?.image ? (
-                                    <img className="img-fluid" src={product.image} alt={product.name} />
+                                {productImage ? (
+                                    <img className="img-fluid" src={productImage} alt={product?.name} />
                                 ) : (
                                     <p>Image not available</p>
                                 )}
@@ -114,22 +137,14 @@ export default function ProductDetail() {
                         <div className="s_product_text">
                             <h3>{product?.name}</h3>
                             <h5>{product?.description}</h5>
-                            <h2>${product?.price}</h2>
-                            {/* <ul className="list">
-                                <li>
-                                  <span>Availability</span>: {stockQuantity > 0 ? `${stockQuantity} items` : 'Out of stock'}
-                                </li>
-                            </ul> */}
+                            <h2>${productPrice}</h2>
                             <div>
                                 <h4>Select Color:</h4>
                                 <div className="color-options">
                                   {availableColors.map((color, index) => (
                                       <button
                                           key={index}
-                                          onClick={() => {
-                                              setSelectedColor(color);
-                                              setSelectedSize(null);
-                                          }}
+                                          onClick={() => handleColorChange(color)}
                                           className={`color-button ${color === selectedColor ? 'active' : ''}`}
                                           style={{
                                               backgroundColor: color === selectedColor ? '#ffba00' : '#d9d9d9',

@@ -62,7 +62,7 @@ export default function  () {
                                         <h6>{product.name}</h6>
                                         <p>Brand: {product.brand?.name || 'N/A'}</p>
                                         <div className="price">
-                                            <h6>${product.price}</h6>
+                                            {/* <h6>${product.price}</h6> */}
                                         </div>
                                         <div className="prd-bottom">
                                             {/* <button onClick={() => handleAddToCart(product)} className="social-info">

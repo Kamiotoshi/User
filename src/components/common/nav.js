@@ -12,40 +12,24 @@ export default function Nav() {
   const [username, setUsername] = useState('');
   const [cartCount, setCartCount] = useState(0); // Cart count state
   const [userId, setUserId] = useState(null);
+  const [userRole, setUserRole] = useState(''); // New state to store user role
 
   useEffect(() => {
     const fetchUserProfileAndCart = async () => {
       try {
         const userInfoResponse = await axios.get(
-          'https://projectky320240926105522.azurewebsites.net/api/User/profile',
+          'https://projectky320240926105522.azurewebsites.net/api/User/userProfile',
           {
             withCredentials: true,
           }
         );
   
-        setUsername(userInfoResponse.data.name);
+        const { name, role } = userInfoResponse.data;
+        setUsername(name);
+        setUserRole(role); // Store the user's role
         setIsLoggedIn(true);
   
-        const storedUserId = localStorage.getItem('Token');
-        if (storedUserId) {
-          setUserId(storedUserId);
-  
-          // Fetch cart items
-          try {
-            const url = `https://projectky320240926105522.azurewebsites.net/api/Cart/user/${storedUserId}`;
-            const rs = await axios.get(url, { withCredentials: true });
-  
-            // Log the full response to inspect data structure
-            console.log('Cart response:', rs.data);
-  
-            // Ensure the cartItems array exists before accessing its length
-            const cartItems = rs.data.length || []; // Fallback to an empty array if undefined
-            setCartCount(cartItems);
-            console.log('Cart item:', cartCount);
-          } catch (error) {
-            console.log('Cart error:', error);
-          }
-        }
+        
       } catch (error) {
         console.error('Error fetching user profile or cart data:', error);
       }
@@ -53,15 +37,13 @@ export default function Nav() {
   
     fetchUserProfileAndCart();
   }, []);
-  
+
   const handleLogout = async () => {
     try {
-      // Call the logout API
       await axios.post('https://projectky320240926105522.azurewebsites.net/api/Auth/logout', {}, {
-        withCredentials: true // This sends the cookies with the request
+        withCredentials: true
       });
   
-      // Clear user data and reset states after a successful logout
       setIsLoggedIn(false);
       setShowDropdown(false);
       setUsername('');
@@ -71,11 +53,8 @@ export default function Nav() {
       console.log('User successfully logged out');
     } catch (error) {
       console.error('Error logging out:', error);
-      // Optionally show an error message to the user
     }
   };
-  
-  
 
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
@@ -146,10 +125,8 @@ export default function Nav() {
                     <a href="#" className="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Shop</a>
                     <ul className="dropdown-menu">
                       <li className="nav-item"><Link className="nav-link" to="/category">Shop Category</Link></li>
-                      
                       <li className="nav-item"><Link className="nav-link" to="/checkout">Product Checkout</Link></li>
                       <li className="nav-item"><Link className="nav-link" to="/cart">Shopping Cart</Link></li>
-                     
                     </ul>
                   </li>
                   <li className="nav-item"><Link className="nav-link" to="/contact">Contact</Link></li>

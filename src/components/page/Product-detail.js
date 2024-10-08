@@ -5,9 +5,8 @@ import Description from '../../components/Details/Description';
 import Related from '../../components/Details/Related';
 import Footer from '../../components/Details/Footer';
 const ShopDetail = () => {
-    useEffect(() => {
-		window.scrollTo(0, 0);
-	  }, []);
+    
+		
     return (
         <div>
             <Detailbanner />

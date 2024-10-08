@@ -26,7 +26,7 @@ const UserProfile = () => {
         const fetchUserData = async () => {
             try {
                 const userInfoResponse = await axios.get(
-                    'https://projectky320240926105522.azurewebsites.net/api/User/profile',
+                    'https://projectky320240926105522.azurewebsites.net/api/User/userProfile',
                     { withCredentials: true }
                 );
                 const userData = userInfoResponse.data;
@@ -224,7 +224,7 @@ const UserProfile = () => {
                                             <th>Status</th>
                                             <th>Payment</th>
                                             <th>View</th>
-                                            <th>Return</th>
+                                            <th>Refund</th>
                                             <th>Cancel</th>
                                         </tr>
                                     </thead>
@@ -237,7 +237,7 @@ const UserProfile = () => {
                                                     <td>{getProductName(order.orderItems[0]?.variantId)}</td>
                                                     <td>${order.totalAmount}</td>
                                                     <td style={{
-                                                        color: order.status === 'Returned' || order.status === 'Denied' || order.status === 'Cancelled' ? 'red' :
+                                                        color: order.status === 'Refuned' || order.status === 'Denied' || order.status === 'Cancelled' ? 'red' :
                                                             order.status === 'Pending' ? 'orange' : 'green'
                                                     }}>
                                                         {order.status}
