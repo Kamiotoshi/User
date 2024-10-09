@@ -238,7 +238,7 @@ export default function CheckOutArea() {
         }
     };
     return (
-        <PayPalScriptProvider options={{ "client-id": "", currency: "USD" }}>
+        <PayPalScriptProvider options={{ "client-id": "AedSI6RNn6tJKtT5d2BzI-hNqk6tvg7GOBMyvJVCsW_r7jscFtP2k76qOLIkNFRqy13sdyjvkU06v8tI", currency: "USD" }}>
             <section className="checkout_area section_gap">
                 <div className="container">
                     <div className="billing_details">
