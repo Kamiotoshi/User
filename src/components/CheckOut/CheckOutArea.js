@@ -158,7 +158,7 @@ export default function CheckOutArea() {
         console.log("Validation passed");
 
         const userId = localStorage.getItem('Token');
-        const checkoutData = {
+        let checkoutData = {
             userId,
             shippingMethod: selectedOption,
             paymentMethod: selectedOption,
@@ -186,8 +186,10 @@ export default function CheckOutArea() {
                 const data = response.data;
                 console.log("Order placed successfully, response:", data);
                 alert('Order placed successfully!');
+                // Add the returned orderId to checkoutData
+                checkoutData = { ...checkoutData, orderId: data.orderId };
                 // Trigger email sending after successful order placement
-                // await sendInvoiceEmail(checkoutData);   
+                await sendInvoiceEmail(checkoutData);   
                 navigate('/confirmation/' + data.orderId);
             } else {
                 console.error("Checkout failed with status:", response.status);
@@ -208,34 +210,35 @@ export default function CheckOutArea() {
     };
 
     //Function to send invoice email
-    // const sendInvoiceEmail = async (checkoutData) => {
-    //     try {
-    //         const emailResponse = await axios.post('https://projectky320240926105522.azurewebsites.net/api/Email/sendInvoiceEmail', {
-    //             email: checkoutData.email,
-    //             name: checkoutData.name,
-    //             orderDetails: {
-    //                 orderId: checkoutData.orderId, // Ensure the correct order ID is passed
-    //                 shippingMethod: checkoutData.shippingMethod,
-    //                 paymentMethod: checkoutData.paymentMethod,
-    //                 totalAmount: checkoutData.totalAmount,
-    //             }
-    //         }, {
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //         });
+    const sendInvoiceEmail = async (checkoutData) => {
+        try {
+            
+            const emailResponse = await axios.post(`https://projectky320240926105522.azurewebsites.net/api/Order/send-invoice/${checkoutData.orderId}`, {
+                email: checkoutData.email,
+                name: checkoutData.name,
+                orderDetails: {
+                    orderId: checkoutData.orderId, // Ensure the correct order ID is passed
+                    shippingMethod: checkoutData.shippingMethod,
+                    paymentMethod: checkoutData.paymentMethod,
+                    totalAmount: checkoutData.totalAmount,
+                }
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
     
-    //         if (emailResponse.status === 200) {
-    //             console.log("Invoice email sent successfully!");
-    //         } else {
-    //             console.error("Failed to send invoice email:", emailResponse.status);
-    //         }
-    //     } catch (error) {
-    //         console.error("Error sending invoice email:", error);
-    //     }
-    // };
+            if (emailResponse.status === 200) {
+                console.log("Invoice email sent successfully!");
+            } else {
+                console.error("Failed to send invoice email:", emailResponse.status);
+            }
+        } catch (error) {
+            console.error("Error sending invoice email:", error);
+        }
+    };
     return (
-        <PayPalScriptProvider options={{ "client-id": "AedSI6RNn6tJKtT5d2BzI-hNqk6tvg7GOBMyvJVCsW_r7jscFtP2k76qOLIkNFRqy13sdyjvkU06v8tI", currency: "USD" }}>
+        <PayPalScriptProvider options={{ "client-id": "", currency: "USD" }}>
             <section className="checkout_area section_gap">
                 <div className="container">
                     <div className="billing_details">
