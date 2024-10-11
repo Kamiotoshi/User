@@ -174,7 +174,7 @@ const OrderSummary = () => {
                         </div>
                         <p className="mb-1">Email: {order.email}</p>
                         <p className="mb-0">Mobile: {order.telephone}</p>
-                        <p className="mb-1">ShippingMethod: {order.shippingMethod}</p>
+                        {/* <p className="mb-1">ShippingMethod: {order.shippingMethod}</p> */}
                         <p className="mb-0">PaymentMethod: {order.paymentMethod}</p>
                     </div>
                 </div>

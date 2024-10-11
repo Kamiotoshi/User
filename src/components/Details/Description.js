@@ -1,56 +1,86 @@
-import React, { useState } from 'react'
-import {useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import '../../assets/css/ReviewForm.css';
+import axios from 'axios';
 
 const Description = () => {
   const { id } = useParams(); // Gets the productId from URL params
-const [selectedRating, setSelectedRating] = useState(0);
-const [comment, setComment] = useState('');
-const [hoverRating, setHoverRating] = useState(0); // Hover effect
+  const [reviews, setReviews] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [averageRating, setAverageRating] = useState(0); // For overall rating
+  const [starCounts, setStarCounts] = useState({
+    5: 0,
+    4: 0,
+    3: 0,
+    2: 0,
+    1: 0,
+  }); // For counting the number of reviews per star rating
 
-const handleStarClick = (rating) => {
-  setSelectedRating(rating);
-};
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  //review
+  useEffect(() => {
+    const fetchReview = async () => {
+      try {
+        const reviewResponse = await fetch(`https://projectky320240926105522.azurewebsites.net/api/Review/product/${id}`);
+        const reviewData = await reviewResponse.json();
+        setReviews(reviewData || []); // Ensure reviewData is set to an array if null or undefined
+         // Calculate overall rating and breakdown by star
+         calculateRatings(reviewData);
+      } catch (error) {
+        console.error('Error fetching reviews:', error);
+        setReviews([]); // Set to an empty array in case of error
+      }
+    };
 
-  if (selectedRating === 0) {
-    alert('Please select a rating.');
-    return;
-  }
+    fetchReview();
+  }, []);
 
-  const userId = localStorage.getItem('Token'); // Assuming Token is the userId
+  const calculateRatings = (reviewData) => {
+    if (!reviewData || reviewData.length === 0) return;
 
-  const reviewData = {
-    userId: userId,       // Retrieved from localStorage
-    productId: id, // Retrieved from useParams (productId from URL)
-    rating: selectedRating,
-    comment: comment,
-  };
+    let totalRating = 0;
+    const starCountsTemp = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
 
-  try {
-    const response = await fetch(`https://projectky320240926105522.azurewebsites.net/api/Review/${id}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify(reviewData),
+    // Calculate total rating and count stars
+    reviewData.forEach((review) => {
+      totalRating += review.rating;
+      starCountsTemp[review.rating] += 1;
     });
 
-    if (response.ok) {
-      alert('Review submitted successfully!');
-      setComment(''); // Clear the comment field
-      setSelectedRating(0); // Reset the rating to 0
-    } else {
-      alert('Failed to submit review. Please try again.');
+    // Set the calculated values
+    setAverageRating((totalRating / reviewData.length).toFixed(1)); // Average rating
+    setStarCounts(starCountsTemp); // Breakdown of star counts
+  };
+
+  const renderStars = (rating) => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <i
+          key={i}
+          className={`fa fa-star ${i <= rating ? 'selected' : ''}`}
+          style={{ color: i <= rating ? '#ffc107' : '#e4e5e9' }} // Example color styling
+        ></i>
+      );
     }
-  } catch (error) {
-    console.error('Error submitting review:', error);
-    alert('An error occurred while submitting your review.');
-  }
-};
+    return stars;
+  };
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get('https://projectky320240926105522.azurewebsites.net/api/User');
+        setUsers(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+  const getUserName = (userId) => {
+    const user = users.find((user) => user.userId === userId);
+    return user ? user.name : 'Unknown';
+  };
 
   return (
     <div>
@@ -371,57 +401,37 @@ const handleSubmit = async (e) => {
                     <div className="col-6">
                       <div className="box_total">
                         <h5>Overall</h5>
-                        <h4>4.0</h4>
-                        <h6>(03 Reviews)</h6>
+                        <h4>{averageRating}</h4> {/* Display overall average rating */}
+                        <h6>({reviews.length} Reviews)</h6> {/* Display number of reviews */}
                       </div>
                     </div>
                     <div className="col-6">
                       <div className="rating_list">
-                        <h3>Based on 3 Reviews</h3>
+                        <h3>Based on {reviews.length} Reviews</h3>
                         <ul className="list">
                           <li>
                             <a href="#">
-                              5 Star <i className="fa fa-star" />
-                              <i className="fa fa-star" />
-                              <i className="fa fa-star" />
-                              <i className="fa fa-star" />
-                              <i className="fa fa-star" /> 01
+                              5 Star {renderStars(5)} {starCounts[5]}
                             </a>
                           </li>
                           <li>
                             <a href="#">
-                              4 Star <i className="fa fa-star" />
-                              <i className="fa fa-star" />
-                              <i className="fa fa-star" />
-                              <i className="fa fa-star" />
-                              <i className="fa fa-star" /> 01
+                              4 Star {renderStars(4)} {starCounts[4]}
                             </a>
                           </li>
                           <li>
                             <a href="#">
-                              3 Star <i className="fa fa-star" />
-                              <i className="fa fa-star" />
-                              <i className="fa fa-star" />
-                              <i className="fa fa-star" />
-                              <i className="fa fa-star" /> 01
+                              3 Star {renderStars(3)} {starCounts[3]}
                             </a>
                           </li>
                           <li>
                             <a href="#">
-                              2 Star <i className="fa fa-star" />
-                              <i className="fa fa-star" />
-                              <i className="fa fa-star" />
-                              <i className="fa fa-star" />
-                              <i className="fa fa-star" /> 01
+                              2 Star {renderStars(2)} {starCounts[2]}
                             </a>
                           </li>
                           <li>
                             <a href="#">
-                              1 Star <i className="fa fa-star" />
-                              <i className="fa fa-star" />
-                              <i className="fa fa-star" />
-                              <i className="fa fa-star" />
-                              <i className="fa fa-star" /> 01
+                              1 Star {renderStars(1)} {starCounts[1]}
                             </a>
                           </li>
                         </ul>
@@ -429,87 +439,44 @@ const handleSubmit = async (e) => {
                     </div>
                   </div>
                   <div className="review_list">
-                    <div className="review_item">
-                      <div className="media">
-                        <div className="d-flex">
-                          <img src="img/product/review-1.png" alt="" />
+                    {/* Safely check if reviews exist */}
+                    {reviews && reviews.length > 0 ? (
+                      reviews.map((review) => (
+                        <div className="review_item" key={review.reviewId}>
+                          <div className="media">
+                            <div className="d-flex">
+                              <img src="img/product/review-1.png" alt="" /> {/* Placeholder image */}
+                            </div>
+                            <div className="media-body">
+                              <h4>{getUserName(review.userId)}</h4> {/* Use the reviewer's name */}
+                              {/* Render stars based on review.rating */}
+                              {renderStars(review.rating)}
+                            </div>
+                          </div>
+                          <p>{review.comment}</p> {/* Display review comment */}
                         </div>
-                        <div className="media-body">
-                          <h4>Blake Ruiz</h4>
-                          <i className="fa fa-star" />
-                          <i className="fa fa-star" />
-                          <i className="fa fa-star" />
-                          <i className="fa fa-star" />
-                          <i className="fa fa-star" />
-                        </div>
-                      </div>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-                        do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                        Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                        laboris nisi ut aliquip ex ea commodo
-                      </p>
-                    </div>
-                    <div className="review_item">
-                      <div className="media">
-                        <div className="d-flex">
-                          <img src="img/product/review-2.png" alt="" />
-                        </div>
-                        <div className="media-body">
-                          <h4>Blake Ruiz</h4>
-                          <i className="fa fa-star" />
-                          <i className="fa fa-star" />
-                          <i className="fa fa-star" />
-                          <i className="fa fa-star" />
-                          <i className="fa fa-star" />
-                        </div>
-                      </div>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-                        do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                        Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                        laboris nisi ut aliquip ex ea commodo
-                      </p>
-                    </div>
-                    <div className="review_item">
-                      <div className="media">
-                        <div className="d-flex">
-                          <img src="img/product/review-3.png" alt="" />
-                        </div>
-                        <div className="media-body">
-                          <h4>Blake Ruiz</h4>
-                          <i className="fa fa-star" />
-                          <i className="fa fa-star" />
-                          <i className="fa fa-star" />
-                          <i className="fa fa-star" />
-                          <i className="fa fa-star" />
-                        </div>
-                      </div>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-                        do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                        Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                        laboris nisi ut aliquip ex ea commodo
-                      </p>
-                    </div>
+                      ))
+                    ) : (
+                      <p>No reviews available.</p>
+                    )}
                   </div>
                 </div>
-                <div className="col-lg-6">
+                {/* <div className="col-lg-6">
                   <div className="review_box">
                     <h4>Add a Review</h4>
                     <p>Your Rating:</p>
                     <ul className="list star-rating">
-                      {/* Generate 5 stars */}
+                      
                       {[1, 2, 3, 4, 5].map((star) => (
                         <li key={star}>
                           <a
                             href="#"
                             onClick={(e) => {
-                              e.preventDefault(); // Ngăn chặn hành vi mặc định
-                              handleStarClick(star); // Set rating on click
-                            }} // Set rating on click
-                            onMouseEnter={() => setHoverRating(star)} // Hover effect
-                            onMouseLeave={() => setHoverRating(0)} // Reset hover when mouse leaves
+                              e.preventDefault(); 
+                              handleStarClick(star);
+                            }} 
+                            onMouseEnter={() => setHoverRating(star)} 
+                            onMouseLeave={() => setHoverRating(0)} 
                           >
                             <i
                               className={`fa fa-star ${
@@ -539,7 +506,7 @@ const handleSubmit = async (e) => {
                       </div>
                     </form>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

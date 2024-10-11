@@ -23,6 +23,7 @@ import '../src/assets/scss/main.scss';
 import User from './components/page/User';
 import Favorites from './components/page/Favorites';
 import OrderDetail from './components/page/Confirmation';
+import Oderuser from './components/User/Oderuser';
 //state 
 function App() {
   const data = localStorage.getItem("state")?JSON.parse(localStorage.getItem("state")):STATE;
@@ -51,6 +52,7 @@ function App() {
             <Route path='/user-settings' Component={User}></Route>
             <Route path='/favorites' Component={Favorites}></Route>
             <Route path='/orderDetail/:id' Component={OrderDetail}></Route>
+            <Route path='/Oderuser' Component={Oderuser}></Route>
           </Routes>
         </main>
         <Footer />

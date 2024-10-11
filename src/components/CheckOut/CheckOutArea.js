@@ -160,7 +160,7 @@ export default function CheckOutArea() {
         const userId = localStorage.getItem('Token');
         let checkoutData = {
             userId,
-            shippingMethod: selectedOption,
+            shippingMethod: 'Free',
             paymentMethod: selectedOption,
             shippingAddress: billingDetails.address1,
             billingAddress: billingDetails.address2,
@@ -238,7 +238,7 @@ export default function CheckOutArea() {
         }
     };
     return (
-        <PayPalScriptProvider options={{ "client-id": "", currency: "USD" }}>
+        <PayPalScriptProvider options={{ "client-id": "AedSI6RNn6tJKtT5d2BzI-hNqk6tvg7GOBMyvJVCsW_r7jscFtP2k76qOLIkNFRqy13sdyjvkU06v8tI", currency: "USD" }}>
             <section className="checkout_area section_gap">
                 <div className="container">
                     <div className="billing_details">
@@ -330,7 +330,7 @@ export default function CheckOutArea() {
                                         ))}
                                     </ul>
                                     <ul className="list list_2">
-                                        <li><a href="#">Shipping <span>{selectedOption}</span></a></li>
+                                        <li><a href="#">Shipping <span>Free</span></a></li>
                                         <li><a href="#">Total <span>${(subTotal).toFixed(2)}</span></a></li>
                                     </ul>
                                 </div>

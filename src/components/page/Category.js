@@ -1,5 +1,5 @@
 import CategoryBanner from '../Category/CategoryBanner';
-import BrowseCategories from '../Category/BrowseCategories';
+
 import RelatedProductArea from '../common/relatedProductArea';
 import Modal from '../Category/Modal';
 import ProductShow from '../Category/ProductShow';
@@ -13,7 +13,7 @@ export default function Category () {
 			<CategoryBanner />
 			<div class="container">
 				<div class="row">
-					<BrowseCategories />	
+					
 					<ProductShow />
 				</div>
 			</div>

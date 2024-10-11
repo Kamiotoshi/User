@@ -1,0 +1,188 @@
+.orderuser-wrapper * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.orderuser-wrapper body {
+    font-family: Arial, sans-serif;
+}
+
+.orderuser-wrapper .acontainer {
+    display: flex;
+    min-height: 100vh;
+    margin-top: 5%;
+    background-color: #f4f4f4;
+}
+
+/* Sidebar */
+.orderuser-wrapper .asidebar {
+    width: 250px;
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+.orderuser-wrapper .wa {
+    display: flex;
+    justify-content: space-between;
+}
+
+.orderuser-wrapper .aprofile-section {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.orderuser-wrapper .aprofile-section img {
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+}
+
+.orderuser-wrapper .ausername {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.orderuser-wrapper .aprofile-section a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.orderuser-wrapper .amenu {
+    list-style: none;
+}
+
+.orderuser-wrapper .amenu li {
+    margin-bottom: 15px;
+}
+
+.orderuser-wrapper .amenu li a {
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+}
+
+/* Main Content */
+.orderuser-wrapper .amain-content {
+    flex-grow: 1;
+    background-color: #fff;
+    padding: 20px;
+}
+
+.orderuser-wrapper .atabs ul {
+    display: flex;
+    list-style: none;
+    background-color: #f8f8f8;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    justify-content: space-around;
+}
+.orderuser-wrapper .tab-link.active {
+    color: #ff7f50;
+    border-bottom: 2px solid #ff7f50;
+}
+
+
+.orderuser-wrapper .atabs ul li {
+    margin-right: 20px;
+}
+
+.orderuser-wrapper .atabs ul li a {
+    text-decoration: none;
+    color: #555;
+    font-weight: bold;
+}
+
+.orderuser-wrapper .asearch-bar {
+    margin: 20px 0;
+}
+
+.orderuser-wrapper .asearch-bar input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.orderuser-wrapper .aorder-item {
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+.orderuser-wrapper .aitem-header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.orderuser-wrapper .ashop-name {
+    font-size: 13px;
+    /* font-weight: bold; */
+    color: red;
+    text-transform: uppercase;
+    line-height: 30px;
+}
+
+.orderuser-wrapper .ashop-actions {
+    display: flex;
+}
+
+.orderuser-wrapper .aview-shop {
+    background-color: #ff7f50;
+    border: none;
+    color: #fff;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.orderuser-wrapper .aitem-body {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.orderuser-wrapper .aitem-body img {
+    width: 100px;
+    height: 100px;
+    margin-right: 20px;
+}
+
+.orderuser-wrapper .aitem-details {
+    flex-grow: 1;
+}
+
+.orderuser-wrapper .aitem-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.orderuser-wrapper span.aass {
+    font-size: 22px;
+}
+.orderuser-wrapper button.arate {
+    margin: 1px;
+}
+.orderuser-wrapper button.acontact-seller {
+    margin: 5px;
+}
+.orderuser-wrapper .atotal-price {
+    font-size: 16px;
+    font-weight: bold;
+    color: red;
+}
+
+.orderuser-wrapper button {
+    background-color: #ff7f50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.orderuser-wrapper button:hover {
+    background-color: #ff5733;
+}
+.orderuser-wrapper .one{
+    width: 25%;
+}

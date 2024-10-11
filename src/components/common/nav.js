@@ -140,6 +140,7 @@ export default function Nav() {
                         <ul className="dropdown-menu" style={{ display: 'block', position: 'absolute', right: '0' }}>
                           <li className="nav-item"><Link className="nav-link" to="/favorites">Favorites</Link></li>
                           <li className="nav-item"><Link className="nav-link" to="/user-settings">User Settings</Link></li>
+                          <li className="nav-item"><Link className="nav-link" to="/Oderuser">Orderuser</Link></li>
                           <li className="nav-item"><Link onClick={handleLogout} className="nav-link" to="/login">Log Out</Link></li>
                         </ul>
                       )}
